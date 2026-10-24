@@ -3,208 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>A LORENA ESTÁ MENTINDO?</title>
+    <title>Contrato Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Dancing+Script:wght@700&display=swap');
-        
+        /* Fontes customizadas */
+        .font-serif-formal { font-family: 'Playfair Display', serif; }
+        .font-sans-heart { font-family: 'Poppins', sans-serif; }
+
+        /* Comportamento geral do corpo */
         body {
-            font-family: 'Poppins', sans-serif;
-            overflow: hidden; /* Evita barras de rolagem */
-            touch-action: none; /* Melhora a experiência mobile */
-            background-color: #fdf2f8; /* Cor de fundo inicial suave */
+            overflow: hidden;
+            touch-action: none;
+            background-color: #ffffff; /* Fundo inicial branco */
             transition: background-color 1s ease;
         }
 
-        .font-romantic {
-            font-family: 'Dancing Script', cursive;
+        /* Animação do coração pulsante (Cena 1) */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.2); }
+            60% { transform: scale(1); }
+            100% { transform: scale(1); }
+        }
+        .animate-beat {
+            animation: heartBeat 1.5s infinite ease-in-out;
         }
 
-        /* Animação de pulso para o coração */
-        @keyframes heartPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        .animate-heart-pulse {
-            animation: heartPulse 1.2s infinite ease-in-out;
-        }
-
-        /* Classes para transição de opacidade suave */
+        /* Transições de opacidade para as cenas */
         .fade-transition {
-            transition: opacity 0.8s ease-in-out;
+            transition: opacity 1s ease-in-out;
         }
 
-        #btn-nao {
-            transition: top 0.2s ease-out, left 0.2s ease-out; /* Animação suave na fuga */
-            z-index: 50;
-        }
-        
-        .assumiu-anim {
-            animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        /* Estilo do fundo de pergaminho (Cena 2) */
+        .bg-parchment {
+            background-color: #fdf6e3;
+            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
         }
 
-        @keyframes bounceIn {
-            0% { transform: scale(0.3); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 1; }
-            70% { transform: scale(0.9); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* Background da tela principal */
-        .bg-prank {
-            background: linear-gradient(to bottom right, #6366f1, #a855f7, #ec4899);
-        }
-        
-        /* Background da tela de sucesso */
-        .bg-success {
-            background: linear-gradient(to right, #4ade80, #3b82f6);
+        /* Borda dupla do contrato */
+        .contract-border {
+            border: 8px double #5c4a3d;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center m-0 p-0 text-white selection:bg-pink-300">
+<body class="h-screen w-screen flex flex-col items-center justify-center m-0 p-0 text-gray-800">
 
-    <!-- CENA 1: Coração Pulsante -->
-    <div id="cena-coracao" class="fixed inset-0 flex items-center justify-center fade-transition opacity-100 z-50">
-        <svg class="w-32 h-32 md:w-48 md:h-48 text-red-500 animate-heart-pulse drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <!-- CENA 1: Coração Pulsante no Fundo Branco -->
+    <div id="scene-1" class="fixed inset-0 flex items-center justify-center bg-white fade-transition opacity-100 z-50">
+        <svg class="w-40 h-40 md:w-56 md:h-56 text-red-500 animate-beat drop-shadow-[0_0_20px_rgba(239,68,68,0.4)]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
     </div>
 
-    <!-- CENA 2: Frase Romântica -->
-    <div id="cena-frase" class="fixed inset-0 flex items-center justify-center fade-transition opacity-0 pointer-events-none hidden z-40">
-        <h1 class="font-romantic text-5xl md:text-7xl text-red-500 text-center px-4 drop-shadow-md">
-            eu mereço um beijo
-        </h1>
-    </div>
-
-    <!-- CENA 3: A Brincadeira Principal -->
-    <div id="cena-brincadeira" class="fixed inset-0 flex flex-col items-center justify-center fade-transition opacity-0 hidden z-30 px-4 w-full">
+    <!-- CENA 2: O Contrato -->
+    <div id="scene-2" class="fixed inset-0 flex items-center justify-center bg-parchment fade-transition opacity-0 hidden z-40 p-4 md:p-8">
         
-        <h1 id="title" class="text-4xl md:text-7xl font-extrabold mb-10 md:mb-12 drop-shadow-lg text-center leading-tight">
-            A LORENA ESTÁ<br>MENTINDO?
-        </h1>
-
-        <div id="buttons-container" class="flex flex-row gap-4 md:gap-8 items-center justify-center relative w-full h-24">
+        <!-- Documento com Borda -->
+        <div class="contract-border w-full max-w-md h-full max-h-[85vh] bg-white bg-opacity-60 flex flex-col items-center justify-between py-10 px-6 md:px-10 rounded-sm relative overflow-hidden">
             
-            <button id="btn-sim" class="bg-green-500 hover:bg-green-400 text-white text-xl md:text-3xl font-bold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-[0_8px_0_rgb(21,128,61)] hover:shadow-[0_4px_0_rgb(21,128,61)] hover:translate-y-1 transition-all active:shadow-none active:translate-y-2 cursor-pointer z-10">
-                SIM
-            </button>
+            <!-- Título do Contrato -->
+            <div class="text-center w-full">
+                <h1 class="font-serif-formal text-3xl md:text-4xl font-bold tracking-widest text-[#4a3f35] border-b-2 border-[#5c4a3d] pb-4 inline-block uppercase">
+                    Contrato Oficial
+                </h1>
+            </div>
 
-            <!-- O botão NÃO inicialmente fica no fluxo flex, depois ganha posição fixa -->
-            <button id="btn-nao" class="bg-red-500 hover:bg-red-400 text-white text-xl md:text-3xl font-bold py-3 px-8 md:py-4 md:px-10 rounded-full shadow-[0_8px_0_rgb(185,28,28)] cursor-pointer">
-                NÃO
-            </button>
+            <!-- Coração Central com Texto -->
+            <div class="relative flex items-center justify-center w-full my-8">
+                <!-- SVG do Coração Ajustado -->
+                <svg class="w-64 h-64 md:w-72 md:h-72 text-red-600 drop-shadow-xl" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                
+                <!-- Texto centralizado exatamente dentro do svg -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center pb-4 pt-2">
+                    <span class="font-sans-heart text-white text-xl md:text-2xl tracking-wide uppercase text-center leading-snug drop-shadow-md">
+                        está<br>me<br>devendo
+                    </span>
+                </div>
+            </div>
+
+            <!-- Área de Assinatura -->
+            <div class="w-full mt-auto pt-6 flex flex-col items-center">
+                <div class="w-3/4 border-b-2 border-dotted border-[#5c4a3d] mb-2"></div>
+                <p class="font-serif-formal text-[#5c4a3d] text-lg uppercase tracking-wider">
+                    Assinatura
+                </p>
+            </div>
 
         </div>
     </div>
 
     <script>
-        // Elementos das Cenas
-        const cenaCoracao = document.getElementById('cena-coracao');
-        const cenaFrase = document.getElementById('cena-frase');
-        const cenaBrincadeira = document.getElementById('cena-brincadeira');
-        
-        // Elementos Interativos
-        const btnNao = document.getElementById('btn-nao');
-        const btnSim = document.getElementById('btn-sim');
-        const title = document.getElementById('title');
-        const buttonsContainer = document.getElementById('buttons-container');
-
-        // Fluxo de Introdução
+        // Lógica de tempo e transição usando Javascript Vanilla
         window.onload = () => {
-            // Após 2.5s, esconde o coração e mostra a frase
+            const scene1 = document.getElementById('scene-1');
+            const scene2 = document.getElementById('scene-2');
+            const body = document.body;
+
+            // Aguarda 3 segundos com o coração batendo
             setTimeout(() => {
-                cenaCoracao.classList.remove('opacity-100');
-                cenaCoracao.classList.add('opacity-0');
+                // Inicia o fade out da cena 1
+                scene1.classList.remove('opacity-100');
+                scene1.classList.add('opacity-0');
                 
+                // Muda a cor de fundo do body por baixo para o pergaminho
+                body.classList.add('bg-parchment');
+
+                // Após 1 segundo de transição de fade-out...
                 setTimeout(() => {
-                    cenaCoracao.classList.add('hidden');
-                    cenaFrase.classList.remove('hidden');
-                    // Força um reflow para a transição funcionar após remover o 'hidden'
-                    void cenaFrase.offsetWidth; 
-                    cenaFrase.classList.remove('opacity-0');
-                    cenaFrase.classList.add('opacity-100');
+                    // Esconde a cena 1 totalmente
+                    scene1.classList.add('hidden');
                     
-                    // Após mais 2.5s, esconde a frase e mostra a brincadeira
-                    setTimeout(() => {
-                        cenaFrase.classList.remove('opacity-100');
-                        cenaFrase.classList.add('opacity-0');
-                        
-                        setTimeout(() => {
-                            cenaFrase.classList.add('hidden');
-                            // Muda a cor do fundo do body para o gradiente da brincadeira
-                            document.body.classList.add('bg-prank');
-                            
-                            cenaBrincadeira.classList.remove('hidden');
-                            void cenaBrincadeira.offsetWidth;
-                            cenaBrincadeira.classList.remove('opacity-0');
-                            cenaBrincadeira.classList.add('opacity-100');
-                        }, 800); // Tempo da transição de esmaecer a frase
-                        
-                    }, 2500); // Tempo exibindo a frase
-                }, 800); // Tempo da transição de esmaecer o coração
-                
-            }, 2500); // Tempo exibindo o coração
+                    // Prepara a cena 2
+                    scene2.classList.remove('hidden');
+                    // Força um reflow do navegador (necessário para o fade-in CSS funcionar logo após remover display:none)
+                    void scene2.offsetWidth; 
+                    
+                    // Inicia o fade-in da cena 2 (contrato)
+                    scene2.classList.remove('opacity-0');
+                    scene2.classList.add('opacity-100');
+                    
+                }, 1000); // Tempo do fade out do coração (1 segundo)
+
+            }, 3000); // 3 Segundos exibindo o coração gigante
         };
-
-        // Lógica do Botão Fujão
-        let isFirstMove = true;
-
-        const moverBotaoNao = () => {
-            if (isFirstMove) {
-                btnNao.style.position = 'fixed';
-                isFirstMove = false;
-            }
-
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            
-            const naoRect = btnNao.getBoundingClientRect();
-            const simRect = btnSim.getBoundingClientRect();
-
-            let novoX, novoY;
-            let sobrepondo = true;
-            let tentativas = 0;
-            const espacoSeguro = 50; // Área ao redor do botão SIM para evitar toques acidentais
-
-            while (sobrepondo && tentativas < 100) {
-                // Margem garantida para não sair da tela do celular
-                const margem = 20; 
-                novoX = Math.random() * (viewportWidth - naoRect.width - (margem * 2)) + margem;
-                novoY = Math.random() * (viewportHeight - naoRect.height - (margem * 2)) + margem;
-
-                // Checa colisão com o botão SIM (+ espaço seguro)
-                const invasaoX = novoX < (simRect.right + espacoSeguro) && (novoX + naoRect.width) > (simRect.left - espacoSeguro);
-                const invasaoY = novoY < (simRect.bottom + espacoSeguro) && (novoY + naoRect.height) > (simRect.top - espacoSeguro);
-
-                if (!invasaoX || !invasaoY) {
-                    sobrepondo = false;
-                }
-                tentativas++;
-            }
-            
-            btnNao.style.left = `${novoX}px`;
-            btnNao.style.top = `${novoY}px`;
-        };
-
-        // Gatilhos para fugir
-        btnNao.addEventListener('mouseover', moverBotaoNao);
-        btnNao.addEventListener('touchstart', (e) => {
-            e.preventDefault(); 
-            moverBotaoNao();
-        });
-        btnNao.addEventListener('focus', moverBotaoNao); // Para usuários navegando via "Tab"
-
-        // Evento de Sucesso (Clicar no SIM)
-        btnSim.addEventListener('click', () => {
-            buttonsContainer.style.display = 'none';
-            
-            title.innerHTML = "ATÉ Q ENFIM<br>ASSUMIU! 🎉";
-            title.className = "text-4xl sm:text-6xl md:text-8xl font-extrabold text-yellow-300 drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)] text-center assumiu-anim leading-tight px-2";
-            
-            document.body.classList.remove('bg-prank');
-            document.body.classList.add('bg-success');
-        });
     </script>
 </body>
 </html>
