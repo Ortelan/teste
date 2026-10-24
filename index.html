@@ -5,136 +5,218 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Contrato Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
-    
+    <!-- Biblioteca para transformar o HTML em Imagem -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* Fontes customizadas */
-        .font-serif-formal { font-family: 'Playfair Display', serif; }
-        .font-sans-heart { font-family: 'Poppins', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
 
-        /* Comportamento geral do corpo */
         body {
-            overflow: hidden;
-            touch-action: none;
-            background-color: #ffffff; /* Fundo inicial branco */
-            transition: background-color 1s ease;
+            margin: 0;
+            overflow-x: hidden;
+            background-color: #fdf6e3; /* Cor base de pergaminho */
         }
 
-        /* Animação do coração pulsante (Cena 1) */
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.2); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.2); }
-            60% { transform: scale(1); }
-            100% { transform: scale(1); }
-        }
-        .animate-beat {
-            animation: heartBeat 1.5s infinite ease-in-out;
-        }
-
-        /* Transições de opacidade para as cenas */
-        .fade-transition {
-            transition: opacity 1s ease-in-out;
-        }
-
-        /* Estilo do fundo de pergaminho (Cena 2) */
-        .bg-parchment {
+        /* Textura de papel antigo */
+        .paper-texture {
+            position: relative;
             background-color: #fdf6e3;
-            background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.05' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.1), 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .paper-texture::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            opacity: 0.4;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Borda dupla do contrato */
         .contract-border {
-            border: 8px double #5c4a3d;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+            border: 8px double #4a3f35;
+        }
+
+        .heart-pulse {
+            animation: pulse 1.2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* Área de assinatura bloqueia o scroll da tela no celular ao desenhar */
+        #signature-pad {
+            touch-action: none;
         }
     </style>
 </head>
-<body class="h-screen w-screen flex flex-col items-center justify-center m-0 p-0 text-gray-800">
+<body class="antialiased text-stone-800">
 
-    <!-- CENA 1: Coração Pulsante no Fundo Branco -->
-    <div id="scene-1" class="fixed inset-0 flex items-center justify-center bg-white fade-transition opacity-100 z-50">
-        <svg class="w-40 h-40 md:w-56 md:h-56 text-red-500 animate-beat drop-shadow-[0_0_20px_rgba(239,68,68,0.4)]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <!-- TELA 1: Coração Pulsante Inicial -->
+    <div id="intro-screen" class="fixed inset-0 bg-pink-50 flex items-center justify-center z-50 transition-opacity duration-1000">
+        <svg class="heart-pulse w-32 h-32 md:w-48 md:h-48 text-red-500 drop-shadow-2xl" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
         </svg>
     </div>
 
-    <!-- CENA 2: O Contrato -->
-    <div id="scene-2" class="fixed inset-0 flex items-center justify-center bg-parchment fade-transition opacity-0 hidden z-40 p-4 md:p-8">
+    <!-- TELA 2: Contrato Oficial (Escondido no início) -->
+    <div id="contract-screen" class="min-h-screen flex items-center justify-center p-4 opacity-0 hidden transition-opacity duration-1000 relative">
         
-        <!-- Documento com Borda -->
-        <div class="contract-border w-full max-w-md h-full max-h-[85vh] bg-white bg-opacity-60 flex flex-col items-center justify-between py-10 px-6 md:px-10 rounded-sm relative overflow-hidden">
+        <!-- Caixa do Contrato (Isso será baixado como imagem) -->
+        <div id="contract-box" class="paper-texture contract-border p-6 md:p-10 w-full max-w-md relative z-10 flex flex-col items-center text-center mt-8 mb-8">
             
-            <!-- Título do Contrato -->
-            <div class="text-center w-full">
-                <h1 class="font-serif-formal text-3xl md:text-4xl font-bold tracking-widest text-[#4a3f35] border-b-2 border-[#5c4a3d] pb-4 inline-block uppercase">
-                    Contrato Oficial
-                </h1>
-            </div>
+            <h1 class="font-['Cinzel'] text-3xl md:text-4xl font-bold mb-6 text-stone-900 border-b-2 border-stone-800 pb-2">
+                CONTRATO OFICIAL
+            </h1>
 
-            <!-- Coração Central com Texto -->
-            <div class="relative flex items-center justify-center w-full my-8">
-                <!-- SVG do Coração Ajustado -->
-                <svg class="w-64 h-64 md:w-72 md:h-72 text-red-600 drop-shadow-xl" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <p class="font-['Poppins'] text-sm md:text-base mb-6 text-stone-700 leading-relaxed">
+                Pelo presente instrumento, a parte assinante reconhece e confessa publicamente o seguinte fato irrevogável:
+            </p>
+
+            <!-- Coração com Texto Dentro -->
+            <div class="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center mb-8 mx-auto">
+                <svg class="absolute inset-0 w-full h-full text-red-600 drop-shadow-md" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
-                
-                <!-- Texto centralizado exatamente dentro do svg -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center pb-4 pt-2">
-                    <span class="font-sans-heart text-white text-xl md:text-2xl tracking-wide uppercase text-center leading-snug drop-shadow-md">
-                        está<br>me<br>devendo
-                    </span>
-                </div>
+                <span class="relative z-10 font-['Poppins'] font-bold text-white text-xl md:text-2xl text-center leading-tight px-4 mt-[-10px]">
+                    ESTÁ ME<br>DEVENDO<br>UM BEIJO
+                </span>
             </div>
 
             <!-- Área de Assinatura -->
-            <div class="w-full mt-auto pt-6 flex flex-col items-center">
-                <div class="w-3/4 border-b-2 border-dotted border-[#5c4a3d] mb-2"></div>
-                <p class="font-serif-formal text-[#5c4a3d] text-lg uppercase tracking-wider">
-                    Assinatura
-                </p>
+            <div class="w-full mt-4">
+                <p class="font-['Poppins'] text-xs text-stone-500 mb-1 text-left">Assine aqui para concordar:</p>
+                <div class="border-b-2 border-stone-800 bg-white/40 rounded-t-lg shadow-inner relative">
+                    <canvas id="signature-pad" class="w-full h-32 cursor-crosshair rounded-t-lg"></canvas>
+                </div>
+                <p class="font-['Great_Vibes'] text-2xl mt-2 text-stone-700">Lorena</p>
             </div>
 
+            <!-- Botões de Ação (Serão escondidos na hora de tirar a foto) -->
+            <div id="action-buttons" class="flex gap-4 mt-8 w-full justify-center" data-html2canvas-ignore="true">
+                <button onclick="clearPad()" class="px-4 py-2 bg-stone-300 text-stone-800 font-bold rounded-lg shadow active:scale-95 transition-transform text-sm">
+                    Limpar
+                </button>
+                <button onclick="downloadContract()" class="px-4 py-2 bg-red-600 text-white font-bold rounded-lg shadow active:scale-95 transition-transform text-sm">
+                    Baixar Contrato
+                </button>
+            </div>
+            
         </div>
     </div>
 
     <script>
-        // Lógica de tempo e transição usando Javascript Vanilla
-        window.onload = () => {
-            const scene1 = document.getElementById('scene-1');
-            const scene2 = document.getElementById('scene-2');
-            const body = document.body;
-
-            // Aguarda 3 segundos com o coração batendo
+        // --- 1. Lógica de Transição das Telas ---
+        setTimeout(() => {
+            const intro = document.getElementById('intro-screen');
+            const contract = document.getElementById('contract-screen');
+            
+            // Apaga o coração
+            intro.style.opacity = '0';
+            
             setTimeout(() => {
-                // Inicia o fade out da cena 1
-                scene1.classList.remove('opacity-100');
-                scene1.classList.add('opacity-0');
+                intro.style.display = 'none';
+                contract.classList.remove('hidden');
                 
-                // Muda a cor de fundo do body por baixo para o pergaminho
-                body.classList.add('bg-parchment');
-
-                // Após 1 segundo de transição de fade-out...
+                // Mostra o contrato suavemente
                 setTimeout(() => {
-                    // Esconde a cena 1 totalmente
-                    scene1.classList.add('hidden');
-                    
-                    // Prepara a cena 2
-                    scene2.classList.remove('hidden');
-                    // Força um reflow do navegador (necessário para o fade-in CSS funcionar logo após remover display:none)
-                    void scene2.offsetWidth; 
-                    
-                    // Inicia o fade-in da cena 2 (contrato)
-                    scene2.classList.remove('opacity-0');
-                    scene2.classList.add('opacity-100');
-                    
-                }, 1000); // Tempo do fade out do coração (1 segundo)
+                    contract.style.opacity = '1';
+                    resizeCanvas(); // Ajusta o tamanho da área de assinatura quando ela aparecer
+                }, 50);
+            }, 1000);
+        }, 3000); // 3 segundos de coração pulsando
 
-            }, 3000); // 3 Segundos exibindo o coração gigante
-        };
+        // --- 2. Lógica da Área de Assinatura (Canvas) ---
+        const canvas = document.getElementById('signature-pad');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        // Ajusta a resolução interna do canvas para evitar traço borrado
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            ctx.lineWidth = 3;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.strokeStyle = '#1c1917'; // Cor da "tinta" da caneta (Stone 900)
+        }
+
+        // Pega as coordenadas exatas do mouse ou do dedo no celular
+        function getPos(e) {
+            const rect = canvas.getBoundingClientRect();
+            if (e.touches) {
+                return {
+                    x: e.touches[0].clientX - rect.left,
+                    y: e.touches[0].clientY - rect.top
+                };
+            }
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            const pos = getPos(e);
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+            e.preventDefault(); // Evita que a tela role no celular enquanto assina
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            const pos = getPos(e);
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+            e.preventDefault();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.closePath();
+        }
+
+        // Eventos para Mouse (Computador)
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        // Eventos para Touch (Celular)
+        canvas.addEventListener('touchstart', startDrawing, { passive: false });
+        canvas.addEventListener('touchmove', draw, { passive: false });
+        canvas.addEventListener('touchend', stopDrawing);
+
+        // Limpar a assinatura
+        function clearPad() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // --- 3. Lógica para Baixar o Contrato como Imagem ---
+        function downloadContract() {
+            const contractBox = document.getElementById('contract-box');
+            const buttons = document.getElementById('action-buttons');
+            
+            // Oculta os botões temporariamente para eles não aparecerem na foto
+            buttons.style.display = 'none';
+
+            // Tira o "print" do elemento HTML e converte em Canvas
+            html2canvas(contractBox, { 
+                backgroundColor: '#fdf6e3', // Garante a cor de fundo correta na foto
+                scale: 2 // Melhora a qualidade da imagem gerada
+            }).then(canvasResult => {
+                // Cria o link de download mágico
+                const link = document.createElement('a');
+                link.download = 'Contrato_da_Lorena.png';
+                link.href = canvasResult.toDataURL('image/png');
+                link.click();
+                
+                // Mostra os botões de volta
+                buttons.style.display = 'flex';
+            });
+        }
     </script>
 </body>
 </html>
